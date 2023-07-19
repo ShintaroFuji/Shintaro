@@ -1,0 +1,78 @@
+#include<stdio.h>
+
+//四則演算の関数(小数点3桁まで対応)
+
+//足し算
+void add(double a, double b, double* ans)
+{
+	*ans = a + b;
+}
+//引き算
+void subtraction(double a, double b, double* ans)
+{
+	*ans = a - b;
+}
+//掛け算
+void multiplication(double a, double b, double* ans)
+{
+	*ans = a * b;
+}
+//割り算
+void division(double a, double b, double* ans)
+{
+	if (b != 0) 
+	{
+		*ans = a / b;
+	}
+	else 
+	{
+		*ans = 0;
+		printf("0で割ることはできません。\n");
+	}
+}
+
+//main関数
+int main()
+{
+	double num1, num2;
+	double ans;
+	char ope;
+	char cont;
+	//y意外が入力されるまで繰り返す
+	do {
+		printf("数字を2つ入力してください。\n");
+		scanf_s("%lf %lf", &num1, &num2);
+
+		printf("演算子を入れてください(+ - * /)\n");
+		scanf_s(" %c", &ope);
+
+		switch (ope)
+		{
+		case '+':
+			add(num1, num2, &ans);
+			printf("%.3f %c %.3f = %.3f\n", num1, ope, num2, ans);
+			break;
+		case '-':
+			subtraction(num1, num2, &ans);
+			printf("%.3f %c %.3f = %.3f\n", num1, ope, num2, ans);
+			break;
+		case '*':
+			multiplication(num1, num2, &ans);
+			printf("%.3f %c %.3f = %.3f\n", num1, ope, num2, ans);
+			break;
+		case '/':
+			division(num1, num2, &ans);
+			printf("%.3f %c %.3f = %.3f\n", num1, ope, num2, ans);
+			break;
+		default:
+			printf("演算子を入力してください。\n");
+			break;
+		}
+
+		printf("他に計算する内容がありますか？(y/n): ");
+		scanf_s(" %c", &cont);
+	} while (cont == 'y' || cont == 'Y');
+
+	return 0;
+
+}
