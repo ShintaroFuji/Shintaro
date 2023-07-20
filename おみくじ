@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h> 
+
+
+int main()
+{
+	int x;
+	char cont;
+
+	do {
+	srand(time(NULL));//乱数を初期化
+	x = rand() % 5;
+
+	
+		switch (x)
+		{
+		case 0:
+			printf("大吉です。\n\n");
+			break;
+		case 1:
+			printf("吉です。\n\n");
+			break;
+		case 2:
+			printf("中吉です。\n\n");
+			break;
+		case 3:
+			printf("小吉です。\n\n");
+			break;
+		case 4:
+			printf("凶です。\n\n");
+			break;
+		default:
+			break;
+		}
+
+		//納得いくまで引き直し
+		printf("もう一度引きますか？(y/n): ");
+		scanf_s(" %c", &cont);
+	}while (cont == 'y' || cont == 'Y');
+	
+
+	return 0;
+
+
+}
