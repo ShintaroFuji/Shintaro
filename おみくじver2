@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h> 
+
+int main()
+{
+    int x;
+    char cont;
+
+    do{
+    srand((unsigned int)time(NULL));  // 乱数を初期化
+
+    const char* messages[5] = 
+    {
+        "大吉です。\n",
+        "吉です。\n",
+        "中吉です。\n",
+        "小吉です。\n",
+        "凶です。\n"
+    };
+
+    x = rand() % 5;
+    printf("%s", messages[x]);
+
+    printf("引き直しますか？(y/n)\n");
+    scanf_s(" %c", &cont,1);
+    } while (cont == 'y' || cont == 'Y');
+
+    return 0;
+}
