@@ -1,0 +1,83 @@
+//ラズパイの7セグメントを0～9まで点灯させるコード（予定）
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+//パスをマクロに置き換え
+#define GPIO_EXPORT "/sys/class/gpio/export"
+#define GPIO_UNEXPORT "/sys/class/gpio/unexport"
+#define GPIO_PATH "/sys/class/gpio/gpio%d/direction"
+#define GPIO_VALUE_PATH "/sys/class/gpio/gpio%d/value"
+
+
+// 各セグメントが接続されているGPIOピンの番号を定義
+int segments[8] = { 4, 17, 27, 22, 5, 6, 13,0 }; // aからgまでのセグメント
+
+//GPIO番号に対応した10を格納
+int ledhl[10][8] = { 
+						{1,1,1,0,1,1,1,0} , //「０」の時  
+						{0,0,1,0,1,0,0,0} , //「１」の時
+						{1,1,0,0,1,1,0,1} , //「２」の時
+						{0,1,1,0,1,1,0,1} , //「３」の時
+						{0.0,1,0,1,0,1,1} , //「４」の時
+						{0,1,1,0,0,1,1,1} , //「５」の時
+						{1,1,1,0,0,1,1,1} , //「６」の時
+						{0,0,1,0,1,1,0,0} , //「７」の時
+						{1,1,1,0,1,1,1,1} , //「８」の時
+						{0,1,1,0,1,1,1,1} //「９」の時
+}; 
+
+int main()
+{
+	int fd;
+	int i = 0;
+	int	j = 0;
+
+	//出力モードに設定・別でやったほうが良い可能性
+	for (i = 0; i < 8; i++)
+	{
+		fd = open(GPIO_EXPORT, O_WRONLY);
+		write(fd, segments[i], 2);
+		close(fd);
+	}
+	usleep(5000000);
+
+	//outに変更
+	for (i = 0; i < 8; i++)
+	{
+		fd = open(GPIO_PATH, O_WRONLY,segments[i]);
+		write(fd, "out", 3);
+		close(fd);
+	}
+
+	//点灯→消灯、格納したやつ
+	for (i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			char value_path[40];
+			//snprintf(配列へのポインタ,サイズ,書式化文字列,文字列内の変換仕様とか);
+			snprintf(value_path, 40, GPIO_VALUE_PATH, segments[j]);
+			fd = open(value_path, O_WRONLY);
+
+			value = '0' + ledhl[i][j]; // 数値を文字に変換
+			write(fd, &value, 1);
+
+			close(fd);
+		}
+
+		usleep(500000);
+			
+			//全部消す
+		for (int i = 0; i < 8; i++)
+		{
+			char value_path[40];
+			snprintf(value_path, 40, GPIO_VALUE_PATH, segments[i]);
+			fd = open(value_path, O_WRONLY);
+
+			write(fd, "0", 1);
+
+			close(fd);
+		}
+	}
+}
