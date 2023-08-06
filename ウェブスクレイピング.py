@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 #①スクレイピング対象のURLを指定
-url = "https://www.python.org/"
+url = "https://www.example.com"
 
 #②URLにアクセスして、その内容を取得
 response = requests.get(url)
